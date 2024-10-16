@@ -1,0 +1,25 @@
+{
+  "name": "writeit",
+  "version": "1.0.0",
+  "description": "Save your notes on the cloud securely.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/NazakatUmrani/WriteIt-Backend.git"
+  },
+  "keywords": [
+    "notes"
+  ],
+  "author": "Nazakat Umrani",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NazakatUmrani/WriteIt-Backend/issues"
+  },
+  "homepage": "https://github.com/NazakatUmrani/WriteIt-Backend#readme",
+  "dependencies": {
+    "express": "^4.21.1"
+  }
+}
