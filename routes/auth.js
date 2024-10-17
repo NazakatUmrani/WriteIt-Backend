@@ -19,11 +19,9 @@ router.post('/signup', [
                         return res.status(400).json({ errors: errors.array() });
                 }
 
-                // Generate a salt
-                const salt = bcrypt.genSaltSync(10);
-                // Hash the password
-                const hash = bcrypt.hashSync(req.body.password, salt);
-                req.body.password = hash;
+                const salt = bcrypt.genSaltSync(10); // Generate a salt
+                const hash = bcrypt.hashSync(req.body.password, salt); // Hash the password
+                req.body.password = hash; // Set the password to hash
 
                 // Create a new user
                 let user = await User.findOne({ email: req.body.email });
@@ -31,7 +29,7 @@ router.post('/signup', [
                 user = User(req.body);
                 await user.save();
 
-                // Create and return a token
+                // Create a JWT Token
                 const data = { user: { id: user.id } };
                 const authToken = jwt.sign(data, JWT_SECRET);
 
@@ -44,6 +42,7 @@ router.post('/signup', [
         }
 })
 
+// Signin using: POST "/api/auth/signin". No Auth required
 router.post('/signin', [
         body('email', 'Enter a valid email').isEmail(),
         body('password', 'Password must be at least 5 characters').isLength({ min: 5 })
@@ -60,6 +59,7 @@ router.post('/signin', [
                 if (!user) return res.status(400).json({ error: "Please enter valid credentials" });
                 const comparePassword = bcrypt.compareSync(req.body.password, user.password);
                 if (!comparePassword) return res.status(400).json({ error: "Please enter valid credentials" });
+
                 // Create and return a token
                 const data = { user: { id: user.id } };
                 const authToken = jwt.sign(data, JWT_SECRET);
@@ -72,6 +72,7 @@ router.post('/signin', [
         }
 })
 
+// Authenticate a user using: POST "/api/auth/authuser". No Auth required
 router.post('/authuser', fetchUser, async (req, res) => {
         try {
                 // Check if user exists
