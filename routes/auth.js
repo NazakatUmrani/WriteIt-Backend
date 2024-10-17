@@ -4,6 +4,7 @@ const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const JWT_SECRET = process.env.JWT_SECRET;
+const fetchUser = require('../middleware/fetchUser');
 
 // Create a new user using: POST "/api/auth/signup". Doesn't require Auth
 router.post('/signup', [
@@ -71,5 +72,18 @@ router.post('/signin', [
         }
 })
 
+router.post('/authuser', fetchUser, async (req, res) => {
+        try {
+                // Check if user exists
+                const user = await User.findById(req.user.id).select('-password');
+                if (!user) return res.status(400).json({ error: "Please enter valid credentials" });
+                res.send(user);
+        } catch (error) {
+                res.status(500).send({
+                        msg: 'An internal server error occured',
+                        Error: error
+                })
+        }
+})
 
 module.exports = router
