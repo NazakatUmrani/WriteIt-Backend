@@ -3,6 +3,20 @@ const fetchUser = require('../middleware/fetchUser');
 const { body, validationResult } = require('express-validator');
 const Note = require('../Models/Note');
 
+// Get all the notes using: GET "/api/notes/fetchAllNotes". Login required
+router.get('/fetchAllNotes', fetchUser, async (req, res) => {
+        try {
+                // Create a new note
+                let notes = await Note.find({ user: req.user.id });
+
+                res.status(200).send(notes);
+        } catch (error) {
+                res.status(500).send({
+                        msg: 'An internal server error occured',
+                        Error: error
+                })
+        }
+})
 
 // Add a note using: POST "/api/notes/addNote". Login required
 router.post('/addNote', fetchUser, [
