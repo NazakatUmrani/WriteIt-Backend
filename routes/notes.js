@@ -6,9 +6,10 @@ const Note = require('../Models/Note');
 // Get all the notes using: GET "/api/notes/fetchAllNotes". Login required
 router.get('/fetchAllNotes', fetchUser, async (req, res) => {
         try {
-                // Create a new note
+                // FInd all notes for the logged in user
                 let notes = await Note.find({ user: req.user.id });
 
+                // Send the notes to the client
                 res.status(200).send(notes);
         } catch (error) {
                 res.status(500).send({
@@ -28,18 +29,22 @@ router.post('/addNote', fetchUser, [
                 const errors = validationResult(req);
                 if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
 
-                // Create a new note
-                let note = await Note.findOne({ title: req.body.title });
+                // Find note if it already exists
+                let note = await Note.findOne({ title: req.body.title, user: req.user.id });
                 if (note) return res.status(400).json({ error: "Sorry a note with this title already exists" });
+
+                // Create a new note
                 note = new Note({
                         title: req.body.title,
                         description: req.body.description,
                         tag: req.body.tag,
                         user: req.user.id
                 });
+
                 // Save the note to the database
                 const savedNote = await note.save();
 
+                // Send the response
                 res.status(200).send(savedNote);
         } catch (error) {
                 res.status(500).send({
