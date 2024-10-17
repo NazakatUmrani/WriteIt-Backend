@@ -44,8 +44,7 @@ router.post('/signup', [
 
 // Signin using: POST "/api/auth/signin". No Auth required
 router.post('/signin', [
-        body('email', 'Enter a valid email').isEmail(),
-        body('password', 'Password must be at least 5 characters').isLength({ min: 5 })
+        body('email', 'Enter a valid email').isEmail()
 ], async (req, res) => {
         try {
                 // If there are errors, return Bad request and the errors

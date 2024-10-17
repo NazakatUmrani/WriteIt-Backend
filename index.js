@@ -13,6 +13,9 @@ app.use(express.json());
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/notes', require('./routes/notes'));
 
+// Home route
+app.use('/', require('./routes/home'));
+
 // Listen on port
 app.listen(port, () => {
   console.log(`WriteIt app listening at http://localhost:${port}`)
