@@ -6,10 +6,14 @@ const port = 5000
 // Connect to database
 connectToMongo();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+// Middleware
+app.use(express.json());
 
+// Define routes
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/notes', require('./routes/notes'));
+
+// Listen on port
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`WriteIt app listening at http://localhost:${port}`)
 })

@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose";
+const {Schema, mongoose} = require('mongoose');
 
 const NoteSchema = new Schema({
         title: {
