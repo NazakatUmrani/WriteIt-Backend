@@ -87,4 +87,29 @@ router.put('/updateNote/:id', fetchUser, [
         }
 })
 
+// Delete a note using: DELETE "/api/notes/deleteNote". Login required
+router.delete('/deleteNote/:id', fetchUser, async (req, res) => {
+        try {
+                // Validate the ObjectId
+                if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+                        return res.status(400).json({ error: "Please provide a valid note id" });
+                }
+
+                // Update a note if it exists
+                let note = await Note.deleteOne({ _id: req.params.id, user:req.user.id }, {
+                        title: req.body.title,
+                        description: req.body.description,
+                        tag: req.body.tag
+                });
+
+                // Send the response
+                res.status(200).send(note);
+        } catch (error) {
+                res.status(500).send({
+                        msg: 'An internal server error occured',
+                        Error: error
+                })
+        }
+})
+
 module.exports = router
