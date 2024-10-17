@@ -2,6 +2,7 @@ const router = require('express').Router();
 const fetchUser = require('../middleware/fetchUser');
 const { body, validationResult } = require('express-validator');
 const Note = require('../Models/Note');
+const mongoose = require('mongoose');
 
 // Get all the notes using: GET "/api/notes/fetchAllNotes". Login required
 router.get('/fetchAllNotes', fetchUser, async (req, res) => {
@@ -46,6 +47,38 @@ router.post('/addNote', fetchUser, [
 
                 // Send the response
                 res.status(200).send(savedNote);
+        } catch (error) {
+                res.status(500).send({
+                        msg: 'An internal server error occured',
+                        Error: error
+                })
+        }
+})
+
+// Update a note using: PUT "/api/notes/updateNote". Login required
+router.put('/updateNote/:id', fetchUser, [
+        body('title', 'Title must be atleast 3 characters long').isLength({ min: 3 }),
+        body('description', 'Description must be atleast 3 characters long').isLength({ min: 3 }),
+], async (req, res) => {
+        try {
+                // If there are errors, return Bad request and the errors
+                const errors = validationResult(req);
+                if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+
+                // Validate the ObjectId
+                if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+                        return res.status(400).json({ error: "Please provide a valid note id" });
+                }
+
+                // Update a note if it exists
+                let note = await Note.updateOne({ _id: req.params.id, user:req.user.id }, {
+                        title: req.body.title,
+                        description: req.body.description,
+                        tag: req.body.tag
+                });
+
+                // Send the response
+                res.status(200).send(note);
         } catch (error) {
                 res.status(500).send({
                         msg: 'An internal server error occured',
