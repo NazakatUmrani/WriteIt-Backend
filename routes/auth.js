@@ -50,7 +50,7 @@ router.post(
       const data = { user: { id: user.id } };
       const authToken = jwt.sign(data, JWT_SECRET);
 
-      res.status(200).send({ authToken });
+      res.status(200).json({ authToken });
     } catch (error) {
       res
         .status(500)
@@ -99,7 +99,7 @@ router.post(
       // Create and return a token
       const data = { user: { id: user.id } };
       const authToken = jwt.sign(data, JWT_SECRET);
-      res.status(200).send({ authToken });
+      res.status(200).json({ authToken });
     } catch (error) {
       res
         .status(500)
@@ -121,7 +121,7 @@ router.post("/authuser", fetchUser, async (req, res) => {
       return res
         .status(400)
         .json({ success: false, message: "Please enter valid credentials" });
-    res.status(200).send(user);
+    res.status(200).json(user);
   } catch (error) {
     res
       .status(500)

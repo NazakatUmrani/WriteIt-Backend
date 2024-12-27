@@ -11,7 +11,7 @@ router.get("/fetchAllNotes", fetchUser, async (req, res) => {
     let notes = await Note.find({ user: req.user.id });
 
     // Send the notes to the client
-    res.status(200).send(notes);
+    res.status(200).json(notes);
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -67,7 +67,7 @@ router.post(
       const savedNote = await note.save();
 
       // Send the response
-      res.status(200).send(savedNote);
+      res.status(200).json(savedNote);
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -120,7 +120,7 @@ router.put(
       );
 
       // Send the response
-      res.status(200).send(note);
+      res.status(200).json(note);
     } catch (error) {
       res.status(500).json({
         success: false,
@@ -152,7 +152,7 @@ router.delete("/deleteNote/:id", fetchUser, async (req, res) => {
     );
 
     // Send the response
-    res.status(200).send(note);
+    res.status(200).json(note);
   } catch (error) {
     res.status(500).json({
       success: false,
