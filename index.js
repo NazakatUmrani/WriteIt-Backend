@@ -1,8 +1,11 @@
 const express = require('express')
 var cors = require('cors')
-const connectToMongo = require('./db');
+var cookieParser = require('cookie-parser')
+const connectToMongo = require('./DB/db');
 const app = express()
-const port = 5000
+require('dotenv').config()
+
+const port = process.env.PORT || 5000;
 
 // Connect to database
 connectToMongo();
@@ -10,13 +13,14 @@ connectToMongo();
 // Middleware
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser())
 
 // Define routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/notes', require('./routes/notes'));
+app.use('/api/auth', require('./Routes/auth.routes'));
+app.use('/api/notes', require('./Routes/notes.routes'));
 
 // Home route
-app.use('/', require('./routes/home'));
+app.use('/', require('./Routes/home.routes'));
 
 // Listen on port
 app.listen(port, () => {

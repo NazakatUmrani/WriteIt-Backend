@@ -70,7 +70,7 @@ router.get("/", (req, res) => {
           description: "Authenticates a user with token",
           request: {
             headers: {
-              "auth-token": "JWT token (required)",
+              "jwtToken": "JWT token (required)",
             },
           },
           response: {
@@ -105,7 +105,7 @@ router.get("/", (req, res) => {
             },
             headers: {
               "Content-Type": "application/json",
-              "auth-token": "JWT token (required)",
+              "jwtToken": "JWT token (required)",
             },
           },
           response: {
@@ -156,7 +156,7 @@ router.get("/", (req, res) => {
           description: "Fetch all notes of the logged-in user",
           request: {
             headers: {
-              "auth-token": "JWT token (required)",
+              "jwtToken": "JWT token (required)",
             },
           },
           response: {
@@ -202,7 +202,7 @@ router.get("/", (req, res) => {
             },
             headers: {
               "Content-Type": "application/json",
-              "auth-token": "JWT token (required)",
+              "jwtToken": "JWT token (required)",
             },
           },
           response: {
@@ -255,7 +255,7 @@ router.get("/", (req, res) => {
               id: "Note's unique ID (required)",
             },
             headers: {
-              "auth-token": "JWT token (required)",
+              "jwtToken": "JWT token (required)",
             },
           },
           response: {
