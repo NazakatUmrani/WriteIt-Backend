@@ -1,6 +1,6 @@
-const Note = require("../Models/Note");
-const { validationResult } = require("express-validator");
-const mongoose = require("mongoose");
+import { validationResult } from "express-validator";
+import mongoose from "mongoose";
+import Note from "../Models/Note.js";
 
 export const fetchAllNotes = async (req, res) => {
   try {
@@ -8,7 +8,7 @@ export const fetchAllNotes = async (req, res) => {
     let notes = await Note.find({ user: req.user.id });
 
     // Send the notes to the client
-    res.status(200).json(notes);
+    res.status(200).json({ success: true, notes });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -23,12 +23,11 @@ export const addNote = async (req, res) => {
     // If there are errors, return Bad request and the errors
     const errors = validationResult(req);
     if (!errors.isEmpty()){
-      res.status(400).json({
+      console.log(errors.array());
+      return res.status(400).json({
         success: false,
         message: "Validation errors",
       });
-      console.log(errors.array());
-      return;
     }
 
     // Find note if it already exists
@@ -53,7 +52,7 @@ export const addNote = async (req, res) => {
     const savedNote = await note.save();
 
     // Send the response
-    res.status(200).json(savedNote);
+    res.status(200).json({ success: true, savedNote });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -77,9 +76,12 @@ export const updateNote = async (req, res) => {
 
     // Validate the ObjectId
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Please provide a valid note id" });
+      return res.status(400).json(
+        { 
+          success: false,
+          message: "Please provide a valid note id"
+        }
+      );
     }
 
     // Update a note if it exists
@@ -93,7 +95,7 @@ export const updateNote = async (req, res) => {
     );
 
     // Send the response
-    res.status(200).json(note);
+    res.status(200).json({ success: true, note });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -107,9 +109,7 @@ export const deleteNote = async (req, res) => {
   try {
     // Validate the ObjectId
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Please provide a valid note id" });
+      return res.status(400).json({ success: false, message: "Please provide a valid note id" });
     }
 
     // Update a note if it exists
@@ -123,7 +123,7 @@ export const deleteNote = async (req, res) => {
     );
 
     // Send the response
-    res.status(200).json(note);
+    res.status(200).json({ success: true, note });
   } catch (error) {
     res.status(500).json({
       success: false,

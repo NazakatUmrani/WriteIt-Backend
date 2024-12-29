@@ -1,7 +1,9 @@
-const router = require("express").Router();
-const authenticate = require("../Middleware/authenticate");
-const { body } = require("express-validator");
-const { fetchAllNotes, addNote, updateNote, deleteNote } = require("../Controllers/notes.controller");
+import express from 'express';
+import { body } from 'express-validator';
+import authenticate from '../Middleware/authenticate.js';
+import { fetchAllNotes, addNote, updateNote, deleteNote } from '../Controllers/notes.controller.js';
+
+const router = express.Router();
 
 // Get all the notes using: GET "/api/notes/fetchAllNotes". Login required
 router.get("/fetchAllNotes", authenticate, fetchAllNotes);
@@ -37,4 +39,4 @@ router.put("/updateNote/:id", authenticate,
 // Delete a note using: DELETE "/api/notes/deleteNote". Login required
 router.delete("/deleteNote/:id", authenticate, deleteNote);
 
-module.exports = router;
+export default router;

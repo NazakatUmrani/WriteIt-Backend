@@ -1,6 +1,8 @@
-const router = require("express").Router();
-const { body } = require("express-validator");
-const { signup, login, logout } = require("../Controllers/auth.controller");
+import express from 'express';
+import { body } from 'express-validator';
+import { signup, login, logout } from '../Controllers/auth.controller.js';
+
+const router = express.Router();
 
 // Create a new user using: POST "/api/auth/signup". Doesn't require Auth
 router.post("/signup",
@@ -20,4 +22,4 @@ router.post("/login", [body("email", "Enter a valid email").isEmail()], login);
 // Logout using: GET "/api/auth/logout". No Auth required
 router.get("/logout", logout);
 
-module.exports = router;
+export default router;

@@ -1,4 +1,5 @@
-const {Schema, mongoose} = require('mongoose');
+import mongoose from 'mongoose';
+const { Schema } = mongoose;
 
 const NoteSchema = new Schema({
         user: {
@@ -26,4 +27,4 @@ const NoteSchema = new Schema({
 
 NoteSchema.index({ user: 1, title: 1 }, { unique: true });
 
-module.exports = mongoose.model("note", NoteSchema);
+export default mongoose.model("note", NoteSchema);
