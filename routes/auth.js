@@ -21,13 +21,11 @@ router.post(
       // If there are errors, return Bad request and the errors
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res
-          .status(400)
-          .json({
-            success: false,
-            message: "Validation errors",
-            error: errors.array(),
-          });
+        res.status(400).json({
+          success: false,
+          message: "Validation errors",
+        });
+        console.log(errors.array());
       }
 
       const salt = bcrypt.genSaltSync(10); // Generate a salt
@@ -37,12 +35,10 @@ router.post(
       // Create a new user
       let user = await User.findOne({ email: req.body.email });
       if (user)
-        return res
-          .status(400)
-          .json({
-            success: false,
-            message: "Sorry a user with this email already exists",
-          });
+        return res.status(400).json({
+          success: false,
+          message: "Sorry a user with this email already exists",
+        });
       user = User(req.body);
       await user.save();
 
@@ -52,13 +48,11 @@ router.post(
 
       res.status(200).json({ authToken });
     } catch (error) {
-      res
-        .status(500)
-        .json({
-          success: false,
-          message: "An internal server error occured",
-          error,
-        });
+      res.status(500).json({
+        success: false,
+        message: "An internal server error occured",
+      });
+      console.log(error);
     }
   }
 );
@@ -72,13 +66,11 @@ router.post(
       // If there are errors, return Bad request and the errors
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return res
-          .status(400)
-          .json({
-            success: false,
-            message: "Validation errors",
-            error: errors.array(),
-          });
+        res.status(400).json({
+          success: false,
+          message: "Validation errors",
+        });
+        console.log(errors.array());
       }
 
       // Check if user exists
@@ -101,13 +93,11 @@ router.post(
       const authToken = jwt.sign(data, JWT_SECRET);
       res.status(200).json({ authToken });
     } catch (error) {
-      res
-        .status(500)
-        .json({
-          success: false,
-          message: "An internal server error occured",
-          error,
-        });
+      res.status(500).json({
+        success: false,
+        message: "An internal server error occured",
+      });
+      console.log(error);
     }
   }
 );
@@ -123,13 +113,11 @@ router.post("/authuser", fetchUser, async (req, res) => {
         .json({ success: false, message: "Please enter valid credentials" });
     res.status(200).json(user);
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "An internal server error occured",
-        error,
-      });
+    res.status(500).json({
+      success: false,
+      message: "An internal server error occured",
+    });
+    console.log(error);
   }
 });
 

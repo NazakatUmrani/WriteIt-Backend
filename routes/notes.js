@@ -16,8 +16,8 @@ router.get("/fetchAllNotes", fetchUser, async (req, res) => {
     res.status(500).json({
       success: false,
       message: "An internal server error occured",
-      error,
     });
+    console.log(error);
   }
 });
 
@@ -38,12 +38,14 @@ router.post(
     try {
       // If there are errors, return Bad request and the errors
       const errors = validationResult(req);
-      if (!errors.isEmpty())
-        return res.status(400).json({
+      if (!errors.isEmpty()){
+        res.status(400).json({
           success: false,
           message: "Validation errors",
-          error: errors.array(),
         });
+        console.log(errors.array());
+        return;
+      }
 
       // Find note if it already exists
       let note = await Note.findOne({
@@ -72,8 +74,8 @@ router.post(
       res.status(500).json({
         success: false,
         message: "An internal server error occured",
-        error,
       });
+      console.log(error);
     }
   }
 );
@@ -95,12 +97,13 @@ router.put(
     try {
       // If there are errors, return Bad request and the errors
       const errors = validationResult(req);
-      if (!errors.isEmpty())
+      if (!errors.isEmpty()){
+        console.log(errors.array());
         return res.status(400).json({
           success: false,
           message: "Validation errors",
-          error: errors.array(),
         });
+      }
 
       // Validate the ObjectId
       if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -125,8 +128,8 @@ router.put(
       res.status(500).json({
         success: false,
         message: "An internal server error occured",
-        error,
       });
+      console.log(error);
     }
   }
 );
@@ -157,8 +160,8 @@ router.delete("/deleteNote/:id", fetchUser, async (req, res) => {
     res.status(500).json({
       success: false,
       message: "An internal server error occured",
-      error,
     });
+    console.log(error);
   }
 });
 

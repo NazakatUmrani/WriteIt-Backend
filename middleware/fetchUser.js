@@ -13,11 +13,11 @@ const fetchUser = async (req, res, next) => {
     req.user = userId.user;
     next();
   } catch (error) {
-    return res.status(401).json({
+    res.status(401).json({
       success: false,
       message: "Please authenticate using a valid token",
-      error,
     });
+    console.log(error);
   }
 };
 
